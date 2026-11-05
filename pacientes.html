@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -63,4 +64,71 @@
 
     <script type="module" src="acciones.js"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pacientes - Hospital Veterinario</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="Logo" class="logo">
+            <h1>Gestión de Pacientes (Mascotas)</h1>
+            <button class="btn-menu" onclick="window.location.href='menu.html'">Volver al Menú</button>
+        </header>
+
+        <section class="form-section">
+            <h3>Registrar Nuevo Paciente</h3>
+            <form id="form-paciente">
+                <div class="input-group">
+                    <label for="nombre_mascota">Nombre de la Mascota:</label>
+                    <input type="text" id="nombre_mascota" required>
+                </div>
+                <div class="input-group">
+                    <label for="especie">Especie (Ej. Perro, Gato):</label>
+                    <input type="text" id="especie" required>
+                </div>
+                <div class="input-group">
+                    <label for="raza">Raza:</label>
+                    <input type="text" id="raza">
+                </div>
+                <div class="input-group">
+                    <label for="edad">Edad (Años):</label>
+                    <input type="number" id="edad">
+                </div>
+                <div class="input-group">
+                    <label for="cliente_id">ID del Propietario (Cliente):</label>
+                    <input type="number" id="cliente_id" required>
+                </div>
+                <button type="submit" class="btn-guardar">Guardar Paciente</button>
+            </form>
+        </section>
+
+        <section class="table-section">
+            <h3>Listado de Pacientes Registrados</h3>
+            <table id="tabla-pacientes">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Mascota</th>
+                        <th>Especie</th>
+                        <th>Raza</th>
+                        <th>Edad</th>
+                        <th>ID Cliente</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script type="module" src="acciones.js"></script>
+</body>
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 </html>

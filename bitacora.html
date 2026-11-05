@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -135,4 +136,143 @@
     <script type="module" src="supabase-config.js"></script>
     <script type="module" src="bitacora.js"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Bitácora - Hospital Veterinario</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <aside>
+        <div>
+            <div class="aside-logo-container">
+                <img src="img/logo.png" alt="Logotipo" class="logo-aside">
+                <h2>Emergencias Veterinarias</h2>
+            </div>
+            <nav>
+                <button onclick="window.location.href='menu.html'">Panel Principal</button>
+                <button onclick="window.location.href='bitacora.html'" class="btn-primario">Nueva Bitácora</button>
+                <button onclick="window.location.href='historial-clinico.html'">Expedientes</button>
+            </nav>
+        </div>
+        <div>
+            <button onclick="sessionStorage.clear(); window.location.href='index.html';" class="btn-peligro">Cerrar Sesión</button>
+        </div>
+    </aside>
+
+    <main class="main-contenido">
+        <div class="tarjeta-principal tarjeta-ancha">
+            <h1 class="titulo-seccion-centrada">Bitácora de Atención de Urgencia</h1>
+            
+            <form onsubmit="guardarBitacora(event)">
+
+                <div class="grid-2-col">
+                    <div>
+                        <label>Fecha:</label>
+                        <input type="date" id="campo-fecha" required>
+                    </div>
+                    <div>
+                        <label>Hora:</label>
+                        <input type="text" id="campo-hora" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label>Médico en Turno:</label>
+                    <input type="text" id="campo-medico" class="input-desactivado">
+                </div>
+
+                <fieldset class="fieldset-seccion">
+                    <legend>Datos del Propietario</legend>
+                    <div class="form-grupo-interno">
+                        <div>
+                            <label>Nombre Completo:</label>
+                            <input type="text" id="prop-nombre" required>
+                        </div>
+                        <div class="grid-2-col">
+                            <div>
+                                <label>Teléfono:</label>
+                                <input type="text" id="prop-telefono" required>
+                            </div>
+                            <div>
+                                <label>Dirección:</label>
+                                <input type="text" id="prop-direccion">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="fieldset-seccion">
+                    <legend>Datos del Paciente (Mascota)</legend>
+                    <div class="grid-2-col">
+                        <div>
+                            <label>Nombre de la Mascota:</label>
+                            <input type="text" id="pac-nombre" required>
+                        </div>
+                        <div>
+                            <label>Especie:</label>
+                            <input type="text" id="pac-especie" placeholder="Ej. Canino / Felino" required>
+                        </div>
+                        <div>
+                            <label>Raza:</label>
+                            <input type="text" id="pac-raza">
+                        </div>
+                        <div>
+                            <label>Sexo:</label>
+                            <select id="pac-sexo">
+                                <option value="Macho">Macho</option>
+                                <option value="Hembra">Hembra</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="margen-superior">
+                        <label>Peso y Edad:</label>
+                        <input type="text" id="pac-pesoedad" placeholder="Ej. 6.5 kg / 3 años">
+                    </div>
+                    <div class="margen-superior">
+                        <label>Motivo de Consulta / Urgencia:</label>
+                        <textarea id="pac-motivo" rows="3" required></textarea>
+                    </div>
+                </fieldset>
+
+                <fieldset class="fieldset-seccion">
+                    <legend>Constantes Fisiológicas</legend>
+                    <div class="grid-3-col">
+                        <div>
+                            <label>Temperatura:</label>
+                            <input type="text" id="const-temp" placeholder="Ej. 38.5 C">
+                        </div>
+                        <div>
+                            <label>Frecuencia Cardíaca:</label>
+                            <input type="text" id="const-fc" placeholder="Latidos/min">
+                        </div>
+                        <div>
+                            <label>Frecuencia Respiratoria:</label>
+                            <input type="text" id="const-fr" placeholder="Respiraciones/min">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div>
+                    <label>Fármacos y Dosis Aplicadas:</label>
+                    <textarea id="nota-farmacos" rows="2"></textarea>
+                </div>
+                <div>
+                    <label>Notas de Avance / Observaciones:</label>
+                    <textarea id="nota-avance" rows="3"></textarea>
+                </div>
+
+                <button type="submit" class="btn-exito btn-grande">Guardar Bitácora y Paciente</button>
+            </form>
+        </div>
+    </main>
+
+    <script type="module" src="supabase-config.js"></script>
+    <script type="module" src="bitacora.js"></script>
+</body>
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 </html>

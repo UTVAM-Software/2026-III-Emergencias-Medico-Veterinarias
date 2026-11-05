@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -77,4 +78,85 @@
         }
     </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Hospital Veterinario</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <aside>
+        <div>
+            <div class="aside-logo-container">
+                <img src="img/logo.png" alt="Logotipo" class="logo-aside">
+                <h2>Emergencias Veterinarias</h2>
+            </div>
+
+            <nav>
+                <button onclick="window.location.href='menu.html'" class="btn-primario"> Panel Principal</button>
+                <button onclick="window.location.href='bitacora.html'"> Nueva Bitácora</button>
+                <button onclick="window.location.href='historial.html'"> Expedientes</button>
+                <button onclick="window.location.href='usuario.html'"> Personal Médico</button>
+            </nav>
+        </div>
+
+        <div>
+            <button onclick="cerrarSesion()" class="btn-peligro">Cerrar Sesión</button>
+        </div>
+    </aside>
+
+    <main class="main-contenido">
+        <header class="dashboard-header">
+            <div>
+                <h1>Panel de Control Médico</h1>
+                <p>Área de Urgencias — Doctor en turno: <span id="saludo-medico" style="font-weight: bold;">Verificando...</span></p>
+            </div>
+        </header>
+
+        <div class="grid-tarjetas">
+            <div onclick="window.location.href='bitacora.html'" class="card-accion card-borde-azul">
+                <h3> Nueva Bitácora</h3>
+                <p>Registrar paciente de urgencia, constantes fisiológicas y fármacos.</p>
+            </div>
+
+            <div onclick="window.location.href='historial.html'" class="card-accion card-borde-rosa">
+                <h3> Buscar Expedientes</h3>
+                <p>Consultar historial clínico y tratamientos previos de pacientes.</p>
+            </div>
+
+            <div onclick="window.location.href='usuario.html'" class="card-accion" style="border-left: 4px solid #28a745;">
+                <h3> Gestión de Médicos</h3>
+                <p>Registrar y administrar al personal médico autorizado del hospital.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        window.addEventListener('load', () => {
+
+            const doctorLogueado = JSON.parse(localStorage.getItem('doctorLogueado'));
+            const elementoSaludo = document.getElementById('saludo-medico');
+
+            if (!doctorLogueado) {
+                alert("Acceso no autorizado. Por favor inicie sesión.");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            if (elementoSaludo) {
+                elementoSaludo.textContent = doctorLogueado.nombre;
+            }
+        });
+
+        function cerrarSesion() {
+            localStorage.removeItem('doctorLogueado');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 </html>

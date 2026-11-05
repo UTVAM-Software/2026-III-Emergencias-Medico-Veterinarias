@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -53,4 +54,61 @@
 
     <script type="module" src="acciones.js"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Clientes - Hospital Veterinario</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="Logo" class="logo">
+            <h1>Gestión de Clientes</h1>
+            <button class="btn-menu" onclick="window.location.href='menu.html'">Volver al Menú</button>
+        </header>
+
+        <section class="form-section">
+            <h3>Registrar Nuevo Cliente</h3>
+            <form id="form-cliente">
+                <div class="input-group">
+                    <label for="nombre">Nombre del Propietario:</label>
+                    <input type="text" id="nombre" required>
+                </div>
+                <div class="input-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="tel" id="telefono" required>
+                </div>
+                <div class="input-group">
+                    <label for="direccion">Dirección:</label>
+                    <input type="text" id="direccion">
+                </div>
+                <button type="submit" class="btn-guardar">Guardar Cliente</button>
+            </form>
+        </section>
+
+        <section class="table-section">
+            <h3>Listado de Clientes Registrados</h3>
+            <table id="tabla-clientes">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Dirección</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script type="module" src="acciones.js"></script>
+</body>
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 </html>

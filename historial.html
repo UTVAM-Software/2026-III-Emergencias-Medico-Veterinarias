@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -69,4 +70,77 @@
 <script type="module" src="supabase-config.js"></script>
     <script type="module" src="historial.js"></script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Bitácoras - Hospital Veterinario</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .contenedor-historial {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .header-superior {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #cbd5e0;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="main-contenido">
+
+    <div class="contenedor-historial">
+
+        <div class="header-superior">
+            <div>
+                <h1 style="color: #004080; margin: 0 0 5px 0; font-size: 28px;">Historial de Urgencias Veterinarias</h1>
+                <p style="color: #4a5568; margin: 0; font-size: 16px;">Consulta y seguimiento de pacientes atendidos</p>
+            </div>
+            <div>
+                <a href="menu.html" style="text-decoration: none;">
+                    <button class="btn-tabla" style="padding: 12px 20px; font-size: 16px;">Regresar al Menú</button>
+                </a>
+            </div>
+        </div>
+
+        <main>
+            <h2 class="titulo-seccion" style="margin-bottom: 20px;">Registros de Atención Médica</h2>
+            
+            <div class="buscador-contenedor">
+                <input type="text" id="buscarPaciente" placeholder="Buscar por nombre de mascota o cliente...">
+            </div>
+
+            <div class="tabla-scroll">
+                <table class="tabla-estilizada" id="tablaHistorial">
+                    <thead>
+                        <tr>
+                            <th>Fecha y Hora</th>
+                            <th>Médico / NIP</th>
+                            <th>Propietario</th>
+                            <th>Mascota (Especie)</th>
+                            <th>Motivo de Consulta</th>
+                            <th>Signos Vitales</th>
+                            <th>Fármacos y Notas</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoHistorial">
+                     
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+<script type="module" src="supabase-config.js"></script>
+    <script type="module" src="historial.js"></script>
+</body>
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 </html>
