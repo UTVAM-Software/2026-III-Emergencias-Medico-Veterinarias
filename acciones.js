@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { supabase } from './supabase-config.js';
 
 async function encriptarID(idTexto) {
@@ -221,6 +222,8 @@ async function registrarBitacora(e) {
     if (error) alert('Error: ' + error.message);
     else { alert('Atención guardada en la bitácora'); document.getElementById('form-bitacora').reset(); cargarBitacora(); }
 =======
+=======
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 import { supabase } from './supabase-config.js';
 
 async function encriptarID(idTexto) {
@@ -442,5 +445,8 @@ async function registrarBitacora(e) {
 
     if (error) alert('Error: ' + error.message);
     else { alert('Atención guardada en la bitácora'); document.getElementById('form-bitacora').reset(); cargarBitacora(); }
+<<<<<<< HEAD
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
+=======
 >>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 }

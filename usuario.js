@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { supabase } from './supabase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -80,6 +81,8 @@ window.eliminarDoctor = async function(id) {
         }
     }
 =======
+=======
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 import { supabase } from './supabase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -160,5 +163,8 @@ window.eliminarDoctor = async function(id) {
             alert('No se pudo eliminar el registro.');
         }
     }
+<<<<<<< HEAD
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
+=======
 >>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 };

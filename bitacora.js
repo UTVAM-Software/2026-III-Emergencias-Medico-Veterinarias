@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { supabase } from './supabase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -94,6 +95,8 @@ async function guardarBitacora(e) {
         alert('Error al registrar en la base de datos: ' + error.message);
     }
 =======
+=======
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 import { supabase } from './supabase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -188,5 +191,8 @@ async function guardarBitacora(e) {
         console.error('Error al guardar:', error.message);
         alert('Error al registrar en la base de datos: ' + error.message);
     }
+<<<<<<< HEAD
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
+=======
 >>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 }

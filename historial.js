@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { supabase } from './supabase-config.js';
 
 let listaBitacoras = [];
@@ -92,6 +93,8 @@ function filtrarHistorial(textoBusqueda) {
     });
     mostrarEnTabla(filtrados);
 =======
+=======
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 import { supabase } from './supabase-config.js';
 
 let listaBitacoras = [];
@@ -184,5 +187,8 @@ function filtrarHistorial(textoBusqueda) {
         return mascota.includes(texto) || propietario.includes(texto);
     });
     mostrarEnTabla(filtrados);
+<<<<<<< HEAD
+>>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
+=======
 >>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 }
