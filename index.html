@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso - Hospital Emergencias Médico Veterinarias</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="body-centrado">
+
+    <main class="tarjeta-principal tarjeta-centrada">
+        <img src="img/logo.png" alt="Logotipo" class="logo-auth">
+
+        <form id="form-login">
+            <h2 class="titulo-seccion">Iniciar Sesión</h2>
+            
+            <div>
+                <label>ID de Doctor:</label>
+                <input type="password" id="entrada-id" placeholder="Ej. DOC-001" required>
+            </div>
+
+            <p id="alerta-error" class="texto-alerta">ID de doctor no encontrado.</p>
+
+            <button type="submit" class="btn-primario">Entrar</button>
+            
+            <p class="texto-centrado">
+                ¿Eres un nuevo doctor? <a href="#" id="enlace-mostrar-registro" class="enlace-accion">Regístrate aquí</a>
+            </p>
+        </form>
+
+        <form id="form-registro" class="oculto">
+            <h2 class="titulo-seccion">Registro de Doctor</h2>
+            
+            <div>
+                <label>ID de Doctor:</label>
+                <input type="password" id="reg-id" placeholder="Ej. DOC-001" required>
+            </div>
+
+            <div>
+                <label>Nombre Completo:</label>
+                <input type="text" id="reg-nombre" required>
+            </div>
+            
+            <div>
+                <label>Especialidad:</label>
+                <input type="text" id="reg-especialidad" placeholder="Ej. Urgencias Veterinarias" required>
+            </div>
+
+            <button type="submit" class="btn-exito">Registrarse</button>
+            
+            <p class="texto-centrado">
+                ¿Ya tienes cuenta? <a href="#" id="enlace-mostrar-login" class="enlace-accion">Inicia sesión</a>
+            </p>
+        </form>
+    </main>
+
+    <script type="module" src="acciones.js"></script>
+</body>
+</html>
