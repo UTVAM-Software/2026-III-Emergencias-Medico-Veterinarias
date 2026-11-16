@@ -1,0 +1,37 @@
+CREATE TABLE clientes (
+    id VARCHAR PRIMARY KEY,
+    nombre_completo VARCHAR NOT NULL,
+    telefono VARCHAR,
+    direccion TEXT
+);
+
+
+CREATE TABLE personal_medico (
+    id VARCHAR PRIMARY KEY,
+    nombre VARCHAR NOT NULL,
+    especialidad VARCHAR
+);
+
+CREATE TABLE pacientes (
+    id VARCHAR PRIMARY KEY,
+    cliente_id VARCHAR REFERENCES clientes(id),
+    nombre VARCHAR NOT NULL,
+    especie VARCHAR,
+    raza VARCHAR,
+    sexo VARCHAR,
+    peso_edad VARCHAR
+);
+
+
+CREATE TABLE bitacoras_atencion (
+    id SERIAL PRIMARY KEY,
+    fecha_registro TIMESTAMPTZ DEFAULT NOW(),
+    medico_id VARCHAR REFERENCES personal_medico(id),
+    paciente_id VARCHAR REFERENCES pacientes(id),
+    motivo_consulta TEXT,
+    temperatura NUMERIC,
+    fc VARCHAR,
+    fr VARCHAR,
+    farmacos TEXT,
+    notas TEXT
+);
