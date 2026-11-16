@@ -159,7 +159,7 @@
             <nav>
                 <button onclick="window.location.href='menu.html'">Panel Principal</button>
                 <button onclick="window.location.href='bitacora.html'" class="btn-primario">Nueva Bitácora</button>
-                <button onclick="window.location.href='historial-clinico.html'">Expedientes</button>
+                <button onclick="window.location.href='historial.html'">Expedientes</button>
             </nav>
         </div>
         <div>
@@ -221,6 +221,10 @@
                             <input type="text" id="pac-especie" placeholder="Ej. Canino / Felino" required>
                         </div>
                         <div>
+                            <label>Clasificación Biológica:</label>
+                            <input type="text" id="pac-clasificacion" placeholder="Ej. Mamífero">
+                        </div>
+                        <div>
                             <label>Raza:</label>
                             <input type="text" id="pac-raza">
                         </div>
@@ -229,6 +233,14 @@
                             <select id="pac-sexo">
                                 <option value="Macho">Macho</option>
                                 <option value="Hembra">Hembra</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Nivel de Urgencia (Triage):</label>
+                            <select id="pac-urgencia" required>
+                                <option value="Verde">Verde (Estable)</option>
+                                <option value="Amarillo">Amarillo (Urgente)</option>
+                                <option value="Rojo">Rojo (Crítico / Emergencia)</option>
                             </select>
                         </div>
                     </div>
@@ -261,10 +273,14 @@
                 </fieldset>
 
                 <div>
+                    <label>Diagnóstico Preliminar / Evaluación Clínica:</label>
+                    <textarea id="nota-diagnostico" rows="2" placeholder="Describa el diagnóstico clínico inicial..."></textarea>
+                </div>
+                <div class="margen-superior">
                     <label>Fármacos y Dosis Aplicadas:</label>
                     <textarea id="nota-farmacos" rows="2"></textarea>
                 </div>
-                <div>
+                <div class="margen-superior">
                     <label>Notas de Avance / Observaciones:</label>
                     <textarea id="nota-avance" rows="3"></textarea>
                 </div>

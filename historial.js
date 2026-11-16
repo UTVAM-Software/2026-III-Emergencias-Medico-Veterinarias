@@ -1,32 +1,28 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { supabase } from './supabase-config.js';
 
 let listaBitacoras = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    cargarHistorial();
-
-    const inputBuscar = document.getElementById('buscarPaciente');
-    if (inputBuscar) {
-        inputBuscar.addEventListener('input', (e) => {
-            filtrarHistorial(e.target.value);
-        });
-    }
+    cargarHistorialUrgencias();
+    configurarFiltrosMultiples();
 });
 
-async function cargarHistorial() {
+async function cargarHistorialUrgencias() {
+    const tbody = document.getElementById('cuerpoHistorial');
+    if (!tbody) return;
+
     try {
         const { data, error } = await supabase
             .from('bitacoras_atencion')
             .select(`
                 *,
-                personal_medico (nombre),
-                pacientes (
-                    nombre,
-                    especie,
+                personal_medico ( nombre, especialidad ),
+                pacientes ( 
+                    id, 
+                    nombre, 
+                    especie, 
                     raza,
-                    clientes (nombre_completo, telefono)
+                    clientes ( nombre_completo, telefono )
                 )
             `)
             .order('id', { ascending: false });
@@ -37,11 +33,8 @@ async function cargarHistorial() {
         mostrarEnTabla(listaBitacoras);
 
     } catch (error) {
-        console.error('Error al cargar el historial:', error.message);
-        const tbody = document.getElementById('cuerpoHistorial');
-        if (tbody) {
-            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: red;">Error al cargar los datos: ${error.message}</td></tr>`;
-        }
+        console.error('Error al cargar historial:', error.message);
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color: red;">Error al cargar datos: ${error.message}</td></tr>`;
     }
 }
 
@@ -49,146 +42,95 @@ function mostrarEnTabla(datos) {
     const tbody = document.getElementById('cuerpoHistorial');
     if (!tbody) return;
 
-    if (datos.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px;">No hay registros en la bitácora.</td></tr>`;
+    if (!datos || datos.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #718096;">No hay registros de atención médica.</td></tr>';
         return;
     }
 
-    tbody.innerHTML = datos.map(b => {
-        const fechaFormateada = b.fecha_registro ? new Date(b.fecha_registro).toLocaleString() : 'N/A';
+    tbody.innerHTML = datos.map(item => {
+        const medicoNombre = item.personal_medico?.nombre || 'Médico no asignado';
+        const medicoId = item.medico_id || 'S/N';
+        const mascotaNombre = item.pacientes?.nombre || 'Desconocido';
+        const mascotaEspecie = item.pacientes?.especie || 'N/A';
+        const mascotaId = item.pacientes?.id || item.paciente_id || 'S/N';
+        const propietarioNombre = item.pacientes?.clientes?.nombre_completo || 'Sin propietario';
+        const propietarioTelefono = item.pacientes?.clientes?.telefono || 'Sin teléfono';
+        const motivoConsulta = item.motivo_consultas || item.motivo_consulta || item.motivo || 'N/A';
+        const fechaHora = item.fecha_registro ? new Date(item.fecha_registro).toLocaleString() : 'N/A';
 
-        const medicoNombre = b.personal_medico?.nombre || 'Dr. en Turno';
-        const propNombre = b.pacientes?.clientes?.nombre_completo || 'Desconocido';
-        const propTel = b.pacientes?.clientes?.telefono ? `(${b.pacientes.clientes.telefono})` : '';
-        const mascNombre = b.pacientes?.nombre || 'Sin nombre';
-        const mascEspecie = b.pacientes?.especie || 'N/A';
+        // Variables auxiliares para los atributos de búsqueda rápida
+        const strIdMascota = String(mascotaId).toLowerCase();
+        const strMedico = String(medicoNombre).toLowerCase();
+        const strPropietario = String(propietarioNombre).toLowerCase();
+        const strMascota = String(mascotaNombre).toLowerCase();
+        const strMotivo = String(motivoConsulta).toLowerCase();
+        const strTelefono = String(propietarioTelefono).toLowerCase();
 
         return `
-            <tr>
-                <td>${fechaFormateada}</td>
-                <td><strong>${medicoNombre}</strong></td>
-                <td>${propNombre} <br><small class="text-muted">${propTel}</small></td>
-                <td><strong>${mascNombre}</strong> <br><small>(${mascEspecie})</small></td>
-                <td>${b.motivo_consulta || 'N/A'}</td>
+            <tr data-id-mascota="${strIdMascota}" 
+                data-medico="${strMedico}" 
+                data-propietario="${strPropietario}" 
+                data-mascota="${strMascota}" 
+                data-motivo="${strMotivo}" 
+                data-telefono="${strTelefono}">
+                <td>${fechaHora}</td>
                 <td>
-                    Temp: ${b.temperatura || 'N/A'}<br>
-                    FC: ${b.frecuencia_cardiaca || 'N/A'}<br>
-                    FR: ${b.frecuencia_respiratoria || 'N/A'}
+                    <strong>${medicoNombre}</strong><br>
+                    <span style="font-family: monospace; font-size: 11px; color: #4a5568;" title="${medicoId}">
+                        ${String(medicoId).substring(0, 15)}...
+                    </span>
+                </td>
+                <td><strong>${propietarioNombre}</strong><br><small style="color: #718096;">(${propietarioTelefono})</small></td>
+                <td>
+                    <strong>${mascotaNombre}</strong><br>
+                    <small style="color: #718096;">(${mascotaEspecie})</small><br>
+                    <span style="font-family: monospace; font-size: 11px; color: #004080; background: #e2e8f0; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 3px;">
+                        ID: ${mascotaId}
+                    </span>
+                </td>
+                <td>${motivoConsulta}</td>
+                <td>
+                    <div style="font-size: 13px;">
+                        Temp: ${item.temperatura || item.temp || '--'}°C<br>
+                        FC: ${item.frecuencia_cardiaca || item.fc || '--'} lpm<br>
+                        FR: ${item.frecuencia_respiratoria || item.fr || '--'} rpm
+                    </div>
                 </td>
                 <td>
-                    <strong>Fármacos:</strong> ${b.farmacos || 'N/A'}<br>
-                    <strong>Notas:</strong> ${b.notas || 'N/A'}
+                    <strong>Fármacos:</strong> ${item.farmacos || 'N/A'}<br>
+                    <strong>Notas:</strong> ${item.notas || 'N/A'}
                 </td>
             </tr>
         `;
     }).join('');
 }
 
-function filtrarHistorial(textoBusqueda) {
-    const texto = textoBusqueda.toLowerCase();
-    const filtrados = listaBitacoras.filter(b => {
-        const mascota = (b.pacientes?.nombre || '').toLowerCase();
-        const propietario = (b.pacientes?.clientes?.nombre_completo || '').toLowerCase();
-        return mascota.includes(texto) || propietario.includes(texto);
-    });
-    mostrarEnTabla(filtrados);
-=======
-=======
->>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
-import { supabase } from './supabase-config.js';
+function configurarFiltrosMultiples() {
+    const inputBusqueda = document.getElementById('buscarPaciente');
+    if (!inputBusqueda) return;
 
-let listaBitacoras = [];
+    inputBusqueda.addEventListener('input', (e) => {
+        const termino = e.target.value.toLowerCase().trim();
+        const filas = document.querySelectorAll('#cuerpoHistorial tr');
 
-document.addEventListener('DOMContentLoaded', () => {
-    cargarHistorial();
+        filas.forEach(fila => {
+            if (fila.cells.length === 1) return; // Salta filas de "No hay registros" o errores
 
-    const inputBuscar = document.getElementById('buscarPaciente');
-    if (inputBuscar) {
-        inputBuscar.addEventListener('input', (e) => {
-            filtrarHistorial(e.target.value);
+            const idMascota = fila.getAttribute('data-id-mascota') || '';
+            const medico = fila.getAttribute('data-medico') || '';
+            const propietario = fila.getAttribute('data-propietario') || '';
+            const mascota = fila.getAttribute('data-mascota') || '';
+            const motivo = fila.getAttribute('data-motivo') || '';
+            const telefono = fila.getAttribute('data-telefono') || '';
+
+            const coincide = idMascota.includes(termino) ||
+                             mascota.includes(termino) || 
+                             propietario.includes(termino) || 
+                             medico.includes(termino) || 
+                             motivo.includes(termino) ||
+                             telefono.includes(termino);
+
+            fila.style.display = coincide ? '' : 'none';
         });
-    }
-});
-
-async function cargarHistorial() {
-    try {
-        const { data, error } = await supabase
-            .from('bitacoras_atencion')
-            .select(`
-                *,
-                personal_medico (nombre),
-                pacientes (
-                    nombre,
-                    especie,
-                    raza,
-                    clientes (nombre_completo, telefono)
-                )
-            `)
-            .order('id', { ascending: false });
-
-        if (error) throw error;
-
-        listaBitacoras = data || [];
-        mostrarEnTabla(listaBitacoras);
-
-    } catch (error) {
-        console.error('Error al cargar el historial:', error.message);
-        const tbody = document.getElementById('cuerpoHistorial');
-        if (tbody) {
-            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: red;">Error al cargar los datos: ${error.message}</td></tr>`;
-        }
-    }
-}
-
-function mostrarEnTabla(datos) {
-    const tbody = document.getElementById('cuerpoHistorial');
-    if (!tbody) return;
-
-    if (datos.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px;">No hay registros en la bitácora.</td></tr>`;
-        return;
-    }
-
-    tbody.innerHTML = datos.map(b => {
-        const fechaFormateada = b.fecha_registro ? new Date(b.fecha_registro).toLocaleString() : 'N/A';
-
-        const medicoNombre = b.personal_medico?.nombre || 'Dr. en Turno';
-        const propNombre = b.pacientes?.clientes?.nombre_completo || 'Desconocido';
-        const propTel = b.pacientes?.clientes?.telefono ? `(${b.pacientes.clientes.telefono})` : '';
-        const mascNombre = b.pacientes?.nombre || 'Sin nombre';
-        const mascEspecie = b.pacientes?.especie || 'N/A';
-
-        return `
-            <tr>
-                <td>${fechaFormateada}</td>
-                <td><strong>${medicoNombre}</strong></td>
-                <td>${propNombre} <br><small class="text-muted">${propTel}</small></td>
-                <td><strong>${mascNombre}</strong> <br><small>(${mascEspecie})</small></td>
-                <td>${b.motivo_consulta || 'N/A'}</td>
-                <td>
-                    Temp: ${b.temperatura || 'N/A'}<br>
-                    FC: ${b.frecuencia_cardiaca || 'N/A'}<br>
-                    FR: ${b.frecuencia_respiratoria || 'N/A'}
-                </td>
-                <td>
-                    <strong>Fármacos:</strong> ${b.farmacos || 'N/A'}<br>
-                    <strong>Notas:</strong> ${b.notas || 'N/A'}
-                </td>
-            </tr>
-        `;
-    }).join('');
-}
-
-function filtrarHistorial(textoBusqueda) {
-    const texto = textoBusqueda.toLowerCase();
-    const filtrados = listaBitacoras.filter(b => {
-        const mascota = (b.pacientes?.nombre || '').toLowerCase();
-        const propietario = (b.pacientes?.clientes?.nombre_completo || '').toLowerCase();
-        return mascota.includes(texto) || propietario.includes(texto);
     });
-    mostrarEnTabla(filtrados);
-<<<<<<< HEAD
->>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
-=======
->>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 }

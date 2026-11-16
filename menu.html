@@ -89,76 +89,171 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control - Hospital Veterinario</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-hero {
+            background: linear-gradient(135deg, #004080 0%, #002244 100%);
+            border-radius: 20px;
+            padding: 35px;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 12px 30px rgba(0, 64, 128, 0.2);
+            margin-bottom: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+        .dashboard-hero::after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .card-moderna {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-moderna::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #004080, #3182ce);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .card-moderna:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 30px rgba(0, 64, 128, 0.12);
+            border-color: #cbd5e0;
+        }
+        .card-moderna:hover::before {
+            opacity: 1;
+        }
+        .icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: #f0f4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+        .card-moderna:hover .icon-box {
+            background: #e2e8f0;
+        }
+        .badge-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(47, 133, 90, 0.15);
+            color: #2f855a;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .dot-pulse {
+            width: 8px;
+            height: 8px;
+            background: #2f855a;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(47, 133, 90, 0.4);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(47, 133, 90, 0.5); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(47, 133, 90, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(47, 133, 90, 0); }
+        }
+    </style>
 </head>
-<body>
+<body class="body-flex">
 
     <aside>
         <div>
             <div class="aside-logo-container">
-                <img src="img/logo.png" alt="Logotipo" class="logo-aside">
+                <img src="img/logo.png" alt="Logo" class="logo-aside">
                 <h2>Emergencias Veterinarias</h2>
             </div>
-
             <nav>
-                <button onclick="window.location.href='menu.html'" class="btn-primario"> Panel Principal</button>
-                <button onclick="window.location.href='bitacora.html'"> Nueva Bitácora</button>
-                <button onclick="window.location.href='historial.html'"> Expedientes</button>
-                <button onclick="window.location.href='usuario.html'"> Personal Médico</button>
+                <button class="btn-tabla" style="text-align: left; background-color: #004080; color: #fff;">Panel Principal</button>
+                <button onclick="window.location.href='bitacora.html'">Nueva Bitácora</button>
+                <button onclick="window.location.href='historial.html'">Expedientes</button>
+                <button onclick="window.location.href='historial_doctores.html'">Personal Médico</button>
             </nav>
         </div>
-
         <div>
-            <button onclick="cerrarSesion()" class="btn-peligro">Cerrar Sesión</button>
+            <button class="btn-peligro" onclick="window.location.href='index.html'">Cerrar Sesión</button>
         </div>
     </aside>
 
     <main class="main-contenido">
-        <header class="dashboard-header">
+        <div class="dashboard-hero">
             <div>
-                <h1>Panel de Control Médico</h1>
-                <p>Área de Urgencias — Doctor en turno: <span id="saludo-medico" style="font-weight: bold;">Verificando...</span></p>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                    <span class="badge-live"><span class="dot-pulse"></span> Sistema Activo</span>
+                </div>
+                <h1 style="color: #ffffff; font-size: 34px; margin: 0 0 6px 0; font-weight: 700; letter-spacing: -0.5px;">Panel de Control</h1>
+                <p style="color: #cbd5e0; margin: 0; font-size: 16px;">Área de Urgencias — Doctor en turno: <span style="font-weight: 600; color: #63b3ed;">charli</span></p>
             </div>
-        </header>
-
-        <div class="grid-tarjetas">
-            <div onclick="window.location.href='bitacora.html'" class="card-accion card-borde-azul">
-                <h3> Nueva Bitácora</h3>
-                <p>Registrar paciente de urgencia, constantes fisiológicas y fármacos.</p>
+            <div style="background: rgba(255, 255, 255, 0.1); padding: 14px 22px; border-radius: 12px; backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.15); text-align: right;">
+                <div style="font-size: 14px; color: #e2e8f0; margin-bottom: 4px;">📅 <span id="fecha-actual"></span></div>
+                <div style="font-size: 18px; font-weight: bold; color: #ffffff; letter-spacing: 0.5px;">🕒 <span id="reloj-actual">00:00:00</span></div>
             </div>
+        </div>
 
-            <div onclick="window.location.href='historial.html'" class="card-accion card-borde-rosa">
-                <h3> Buscar Expedientes</h3>
-                <p>Consultar historial clínico y tratamientos previos de pacientes.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 30px;">
+            <div class="card-moderna" onclick="window.location.href='bitacora.html'">
+                <div class="icon-box">📋</div>
+                <h3 style="color: #1a202c; font-size: 19px; margin: 0 0 8px 0; font-weight: 600;">Nueva Bitácora</h3>
+                <p style="color: #718096; font-size: 14px; line-height: 1.5; margin: 0;">Registrar paciente de urgencia, constantes fisiológicas y fármacos.</p>
             </div>
-
-            <div onclick="window.location.href='usuario.html'" class="card-accion" style="border-left: 4px solid #28a745;">
-                <h3> Gestión de Médicos</h3>
-                <p>Registrar y administrar al personal médico autorizado del hospital.</p>
+            
+            <div class="card-moderna" onclick="window.location.href='historial.html'">
+                <div class="icon-box">📁</div>
+                <h3 style="color: #1a202c; font-size: 19px; margin: 0 0 8px 0; font-weight: 600;">Buscar Expedientes</h3>
+                <p style="color: #718096; font-size: 14px; line-height: 1.5; margin: 0;">Consultar historial clínico y tratamientos previos de pacientes.</p>
+            </div>
+            
+            <div class="card-moderna" onclick="window.location.href='personal.html'">
+                <div class="icon-box">👨‍⚕️</div>
+                <h3 style="color: #1a202c; font-size: 19px; margin: 0 0 8px 0; font-weight: 600;">Gestión de Médicos</h3>
+                <p style="color: #718096; font-size: 14px; line-height: 1.5; margin: 0;">Registrar y administrar al personal médico autorizado del hospital.</p>
+            </div>
+        </div>
+               </p>
             </div>
         </div>
     </main>
 
     <script>
-        window.addEventListener('load', () => {
+        const opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const fecha = new Date().toLocaleDateString('es-ES', opcionesFecha);
+        const elementoFecha = document.getElementById('fecha-actual');
+        if(elementoFecha) elementoFecha.textContent = fecha.charAt(0).toUpperCase() + fecha.slice(1);
 
-            const doctorLogueado = JSON.parse(localStorage.getItem('doctorLogueado'));
-            const elementoSaludo = document.getElementById('saludo-medico');
-
-            if (!doctorLogueado) {
-                alert("Acceso no autorizado. Por favor inicie sesión.");
-                window.location.href = 'index.html';
-                return;
-            }
-
-            if (elementoSaludo) {
-                elementoSaludo.textContent = doctorLogueado.nombre;
-            }
-        });
-
-        function cerrarSesion() {
-            localStorage.removeItem('doctorLogueado');
-            window.location.href = 'index.html';
-        }
+        setInterval(() => {
+            const reloj = document.getElementById('reloj-actual');
+            if(reloj) reloj.textContent = new Date().toLocaleTimeString('es-ES');
+        }, 1000);
     </script>
 </body>
 <<<<<<< HEAD

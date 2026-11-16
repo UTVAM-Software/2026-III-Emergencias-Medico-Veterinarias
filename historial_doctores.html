@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Doctores - Hospital Veterinario</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="body-centrado">
+    <div class="tarjeta-principal tarjeta-maxima">
+        <header class="header-expedientes">
+            <div>
+                <h1>Doctores Registrados en el Sistema</h1>
+            </div>
+            <button class="btn-tabla" style="background-color: #ffffff; color: #004080;" onclick="window.location.href='personal.html'">Volver a Gestión</button>
+        </header>
+
+        <section>
+            <div class="tabla-scroll">
+                <table id="tabla-historicos" class="tabla-estilizada">
+                    <thead>
+                        <tr>
+                            <th>ID / Matrícula</th>
+                            <th>Nombre</th>
+                            <th>Especialidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-historicos">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="historial_doctores.js"></script>
+</body>
+</html>
