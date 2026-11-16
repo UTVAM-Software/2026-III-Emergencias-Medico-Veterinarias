@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Personal Médico - Hospital Veterinario</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="body-centrado">
+    <div class="tarjeta-principal tarjeta-maxima">
+        <header class="header-expedientes">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <h1>Gestión de Personal Médico</h1>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn-tabla" style="background-color: #2980b9; color: #ffffff;" onclick="window.location.href='historial_doctores.html'">Ver Historial de Doctores</button>
+                <button class="btn-tabla" style="background-color: #ffffff; color: #004080;" onclick="window.location.href='menu.html'">Volver al Menú</button>
+            </div>
+        </header>
+
+        <section style="margin-bottom: 10px;">
+            <fieldset class="fieldset-seccion">
+                <legend>Registrar Nuevo Doctor</legend>
+                <form id="form-usuario">
+                    <div class="grid-2-col">
+                        <div>
+                            <label for="id">Código / ID de Doctor:</label>
+                            <input type="text" id="id" placeholder="Ej. 482910" required>
+                        </div>
+                        <div>
+                            <label for="nombre">Nombre Completo:</label>
+                            <input type="text" id="nombre" placeholder="Ej. Dr. Juan Pérez" required>
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top: 15px;">
+                        <label for="especialidad">Especialidad:</label>
+                        <input type="text" id="especialidad" placeholder="Ej. Cirugía, Urgencias..." required>
+                    </div>
+                    <button type="submit" class="btn-exito">Registrar Doctor</button>
+                </form>
+            </fieldset>
+        </section>
+    </div>
+
+    <script type="module" src="usuario.js"></script>
+</body>
+</html>

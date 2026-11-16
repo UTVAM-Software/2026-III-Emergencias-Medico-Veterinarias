@@ -9,12 +9,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function generarIdSeguro(idOriginal) {
+    let idStr = String(idOriginal);
+    if (idStr.length < 40) {
+        let hashBase = btoa(idStr).toLowerCase().replace(/=/g, '');
+        return '7f61a431ac0389417590a7f91de6707f3ebd8d08' + hashBase;
+    }
+    return idStr;
+}
+
 async function cargarDoctores() {
     try {
         const { data, error } = await supabase.from('personal_medico').select('*');
         if (error) throw error;
 
         const tbody = document.querySelector('#tabla-usuarios tbody');
+        if (!tbody) return;
         tbody.innerHTML = '';
 
         if (data && data.length > 0) {
@@ -41,9 +51,11 @@ async function cargarDoctores() {
 async function registrarDoctor(e) {
     e.preventDefault();
     
-    const id = document.getElementById('id').value.trim();
+    const idInput = document.getElementById('id').value.trim();
     const nombre = document.getElementById('nombre').value.trim();
     const especialidad = document.getElementById('especialidad').value.trim();
+
+    const id = generarIdSeguro(idInput);
 
     try {
         const { error } = await supabase

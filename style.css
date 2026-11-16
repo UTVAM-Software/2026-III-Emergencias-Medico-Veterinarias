@@ -1,13 +1,14 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8;
-    color: #1a1a1a;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f4f7fa;
+    color: #1a202c;
     margin: 0;
     padding: 0;
     display: flex;
     min-height: 100vh;
     box-sizing: border-box;
-    font-size: 18px;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 .body-centrado {
@@ -17,7 +18,7 @@ body {
     min-height: 100vh;
     padding: 20px;
     box-sizing: border-box;
-    background-color: #f0f4f8;
+    background-color: #f4f7fa;
 }
 
 .body-flex {
@@ -26,14 +27,22 @@ body {
     margin: 0;
 }
 
+.main-contenido {
+    flex: 1;
+    padding: 30px 40px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    background-color: #f4f7fa;
+}
+
 .tarjeta-principal {
     background-color: #ffffff;
-    border: 3px solid #004080;
+    border: 1px solid #e2e8f0;
     border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 64, 128, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 64, 128, 0.08);
     width: 100%;
     max-width: 650px;
-    padding: 40px 30px;
+    padding: 40px 35px;
     box-sizing: border-box;
 }
 
@@ -48,28 +57,22 @@ body {
 }
 
 .tarjeta-maxima {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
-}
-
-.main-contenido {
-    flex: 1;
-    padding: 40px;
-    overflow-y: auto;
-    box-sizing: border-box;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 18px;
     text-align: left;
 }
 
 form label, 
 .tarjeta-principal label {
-    font-weight: bold;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    color: #2d3748;
 }
 
 form input, 
@@ -79,35 +82,42 @@ form textarea,
 .tarjeta-principal select, 
 .tarjeta-principal textarea {
     width: 100%;
-    padding: 12px;
-    margin-top: 5px;
-    border: 2px solid #cbd5e0;
-    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 6px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
     box-sizing: border-box;
-    font-size: 16px;
+    font-size: 15px;
     outline: none;
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
 }
 
 form input:focus, 
 form select:focus, 
 form textarea:focus {
     border-color: #004080;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(0, 64, 128, 0.1);
 }
 
 .input-desactivado {
-    background-color: #e2e8f0;
+    background-color: #edf2f7 !important;
     font-weight: bold;
+    color: #4a5568;
 }
 
 .fieldset-seccion {
-    border: 2px solid #cbd5e0;
-    border-radius: 8px;
-    padding: 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    background-color: #ffffff;
 }
 
 .fieldset-seccion legend {
     font-weight: bold;
     color: #004080;
+    padding: 0 8px;
 }
 
 .btn-primario {
@@ -116,10 +126,11 @@ form textarea:focus {
     border: none;
     width: 100%;
     padding: 14px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .btn-primario:hover {
@@ -132,11 +143,12 @@ form textarea:focus {
     border: none;
     width: 100%;
     padding: 14px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
     cursor: pointer;
     margin-top: 10px;
+    transition: background-color 0.2s ease;
 }
 
 .btn-exito:hover {
@@ -145,7 +157,7 @@ form textarea:focus {
 
 .btn-grande {
     padding: 16px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .btn-peligro {
@@ -154,32 +166,61 @@ form textarea:focus {
     border: 2px solid #feb2b2;
     width: 100%;
     padding: 12px;
-    font-weight: bold;
-    border-radius: 8px;
+    font-weight: 600;
+    border-radius: 10px;
     cursor: pointer;
     text-align: center;
+    transition: all 0.2s ease;
+}
+
+.btn-peligro:hover {
+    background-color: #fed7d7;
 }
 
 .btn-tabla {
     background-color: #004080;
     color: #fff;
     border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
+    padding: 10px 18px;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-tabla:hover {
+    background-color: #003366;
+}
+
+.btn-eliminar,
+.btn-eliminar-tabla {
+    background-color: #c53030;
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-eliminar:hover,
+.btn-eliminar-tabla:hover {
+    background-color: #9b2c2c;
 }
 
 aside {
     width: 280px;
     background-color: #ffffff;
-    border-right: 3px solid #004080;
+    border-right: 1px solid #e2e8f0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 30px 20px;
     box-sizing: border-box;
-    box-shadow: 4px 0 15px rgba(0, 64, 128, 0.08);
+    box-shadow: 4px 0 15px rgba(0, 64, 128, 0.04);
 }
 
 .aside-logo-container {
@@ -188,13 +229,13 @@ aside {
 }
 
 .aside-logo-container h2 {
-    font-size: 17px;
+    font-size: 16px;
     color: #004080;
     margin: 0;
 }
 
 .logo-aside {
-    max-width: 140px;
+    max-width: 130px;
     width: 100%;
     height: auto;
     margin-bottom: 12px;
@@ -206,53 +247,55 @@ aside {
 aside nav {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 aside nav button {
     background-color: #ffffff;
     color: #004080;
-    border: 2px solid #004080;
+    border: 2px solid #e2e8f0;
     width: 100%;
-    padding: 14px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 10px;
     cursor: pointer;
     text-align: left;
+    transition: all 0.2s ease;
 }
 
 aside nav button:hover {
     background-color: #f0f4f8;
+    border-color: #004080;
 }
 
 .logo-auth {
-    max-width: 150px;
+    max-width: 140px;
     width: 100%;
     height: auto;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-.titulo-seccion {
-    color: #004080;
-    margin-top: 0;
-    text-align: center;
-}
-
+.titulo-seccion,
 .titulo-seccion-centrada {
     color: #004080;
     margin-top: 0;
+    font-weight: 700;
+}
+
+.titulo-seccion-centrada {
     text-align: center;
 }
 
 .texto-alerta {
-    color: red;
+    color: #c53030;
     display: none;
     text-align: center;
     font-weight: bold;
+    font-size: 14px;
 }
 
 .texto-centrado {
@@ -261,7 +304,7 @@ aside nav button:hover {
 
 .enlace-accion {
     color: #004080;
-    font-weight: bold;
+    font-weight: 600;
     text-decoration: none;
 }
 
@@ -271,6 +314,18 @@ aside nav button:hover {
 
 .oculto {
     display: none !important;
+}
+
+.margen-superior {
+    margin-top: 15px;
+}
+
+.negrita {
+    font-weight: bold;
+}
+
+.padding-tabla {
+    padding: 20px;
 }
 
 .dashboard-header {
@@ -283,20 +338,22 @@ aside nav button:hover {
 .dashboard-header h1 {
     color: #004080;
     margin: 0;
-    font-size: 28px;
+    font-size: 26px;
 }
 
 .dashboard-header p {
-    color: #4a5568;
+    color: #718096;
     margin: 5px 0 0 0;
+    font-size: 15px;
 }
 
 .badge-medico {
     background-color: #e2e8f0;
-    padding: 10px 15px;
+    padding: 8px 14px;
     border-radius: 8px;
-    font-weight: bold;
+    font-weight: 600;
     color: #004080;
+    font-size: 14px;
 }
 
 .grid-tarjetas {
@@ -308,11 +365,18 @@ aside nav button:hover {
 
 .card-accion {
     background-color: #fff;
-    border: 2px solid #cbd5e0;
-    border-radius: 12px;
-    padding: 25px;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 24px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    transition: all 0.2s ease;
+}
+
+.card-accion:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,64,128,0.08);
+    border-color: #004080;
 }
 
 .card-borde-azul {
@@ -320,17 +384,19 @@ aside nav button:hover {
 }
 
 .card-borde-rosa {
-    border-left: 6px solid #ffb6c1;
+    border-left: 6px solid #ed64a6;
 }
 
 .card-accion h3 {
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
     color: #004080;
+    font-size: 18px;
 }
 
 .card-accion p {
     margin: 0;
-    color: #4a5568;
+    color: #718096;
+    font-size: 14px;
 }
 
 .grid-2-col {
@@ -342,11 +408,7 @@ aside nav button:hover {
 .grid-3-col {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-}
-
-.margen-superior {
-    margin-top: 10px;
+    gap: 15px;
 }
 
 .form-grupo-interno {
@@ -358,17 +420,18 @@ aside nav button:hover {
 .header-expedientes {
     background-color: #004080;
     color: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
+    padding: 24px 30px;
+    border-radius: 14px;
     margin-bottom: 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 64, 128, 0.15);
 }
 
 .header-expedientes h1 {
     margin: 0;
-    font-size: 26px;
+    font-size: 24px;
 }
 
 .buscador-contenedor {
@@ -380,26 +443,35 @@ aside nav button:hover {
 
 .buscador-contenedor input {
     flex: 1;
-    padding: 14px;
-    font-size: 18px;
-    border: 2px solid #cbd5e0;
-    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background-color: #ffffff;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.buscador-contenedor input:focus {
+    border-color: #004080;
+    box-shadow: 0 0 0 4px rgba(0, 64, 128, 0.1);
 }
 
 .tabla-scroll {
     width: 100%;
     overflow-x: auto;
     background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border: 2px solid #cbd5e0;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    border: 1px solid #e2e8f0;
 }
 
 .tabla-estilizada {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     text-align: left;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .tabla-estilizada thead tr {
@@ -408,17 +480,23 @@ aside nav button:hover {
 }
 
 .tabla-estilizada th {
-    padding: 16px 14px;
-    border: 1px solid #cbd5e0;
-    font-weight: bold;
+    padding: 16px;
+    border-bottom: 2px solid #003366;
+    font-weight: 600;
     color: #ffffff;
+    letter-spacing: 0.3px;
 }
 
 .tabla-estilizada td, 
 .celda-borde {
-    padding: 14px;
-    border: 1px solid #cbd5e0;
-    vertical-align: top;
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+    color: #2d3748;
+}
+
+.tabla-estilizada tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .tabla-estilizada tbody tr:nth-child(even) {
@@ -427,12 +505,4 @@ aside nav button:hover {
 
 .tabla-estilizada tbody tr:hover {
     background-color: #edf2f7;
-}
-
-.negrita {
-    font-weight: bold;
-}
-
-.padding-tabla {
-    padding: 20px;
 }

@@ -20,6 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function generarMatricula() {
+    const min = 10000;
+    const max = 999999;
+    const numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;
+    return String(numeroAleatorio).padStart(6, '0');
+}
+
 async function guardarBitacora(e) {
     e.preventDefault();
 
@@ -33,12 +40,14 @@ async function guardarBitacora(e) {
     const propNombre = document.getElementById('prop-nombre').value.trim();
     const propTelefono = document.getElementById('prop-telefono').value.trim();
     const propDireccion = document.getElementById('prop-direccion').value.trim();
+    
     const pacNombre = document.getElementById('pac-nombre').value.trim();
     const pacEspecie = document.getElementById('pac-especie').value.trim();
     const pacRaza = document.getElementById('pac-raza').value.trim();
     const pacSexo = document.getElementById('pac-sexo').value;
     const pacPesoEdad = document.getElementById('pac-pesoedad').value.trim();
     const motivoConsulta = document.getElementById('pac-motivo').value.trim();
+    
     const temperatura = document.getElementById('const-temp').value.trim();
     const fc = document.getElementById('const-fc').value.trim();
     const fr = document.getElementById('const-fr').value.trim();
@@ -46,17 +55,27 @@ async function guardarBitacora(e) {
     const notas = document.getElementById('nota-avance').value.trim();
 
     try {
+        const idClienteMatricula = generarMatricula();
+        const idPacienteMatricula = generarMatricula();
+
         const { data: clienteData, error: clienteError } = await supabase
             .from('clientes')
-            .insert([{ nombre_completo: propNombre, telefono: propTelefono, direccion: propDireccion }])
+            .insert([{ 
+                id: idClienteMatricula,
+                nombre_completo: propNombre, 
+                telefono: propTelefono, 
+                direccion: propDireccion 
+            }])
             .select()
             .single();
 
         if (clienteError) throw clienteError;
         const clienteId = clienteData.id;
+
         const { data: pacienteData, error: pacienteError } = await supabase
             .from('pacientes')
             .insert([{
+                id: idPacienteMatricula,
                 cliente_id: clienteId,
                 nombre: pacNombre,
                 especie: pacEspecie,
@@ -69,6 +88,7 @@ async function guardarBitacora(e) {
 
         if (pacienteError) throw pacienteError;
         const pacienteId = pacienteData.id;
+
         const { error: bitacoraError } = await supabase
             .from('bitacoras_atencion')
             .insert([{
@@ -84,7 +104,7 @@ async function guardarBitacora(e) {
 
         if (bitacoraError) throw bitacoraError;
 
-        alert('¡Bitácora registrada con éxito y tablas relacionadas actualizadas!');
+        alert('¡Bitácora registrada con éxito y matrículas asignadas!');
         e.target.reset();
         window.location.href = 'historial.html';
 

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Solo Lectura - Hospital Veterinaria</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: 0 auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1, h2 { color: #2c3e50; }
+        .badge-read-only { background-color: #e67e22; color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; float: right; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 30px; font-size: 0.95rem; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #34495e; color: white; text-transform: capitalize; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .alert-box { background-color: #fbeed7; color: #8a6d3b; padding: 12px; margin-bottom: 20px; border-radius: 4px; border-left: 4px solid #e67e22; }
+        .btn-volver { display: inline-block; margin-bottom: 15px; color: #34495e; text-decoration: none; font-weight: bold; }
+        .buscador-container { margin-bottom: 25px; }
+        .buscador-container input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; box-sizing: border-box; }
+        .seccion-tabla { transition: all 0.3s ease; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="btn-volver">← Volver al inicio</a>
+        <span class="badge-read-only">MODO SOLO LECTURA</span>
+        <h1>Panel de Consulta General</h1>
+        <div class="alert-box">
+            <strong>Aviso:</strong> Este perfil es de solo lectura. No cuenta con privilegios de creación, edición ni eliminación de registros.
+        </div>
+
+        <div class="buscador-container">
+            <input type="text" id="buscador-general" placeholder=" Escribe para filtrar tablas por coincidencia..." onkeyup="filtrarTablasInteligente()">
+        </div>
+
+        <div class="seccion-tabla" id="seccion-clientes">
+            <h2>1. Clientes Registrados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre Completo</th>
+                        <th>Teléfono</th>
+                        <th>Dirección</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-clientes">
+                    <tr><td colspan="4" style="text-align:center;">Cargando clientes...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="seccion-tabla" id="seccion-pacientes">
+            <h2>2. Pacientes (Mascotas)</h2>
+            <table>
+                <thead id="head-pacientes"></thead>
+                <tbody id="tabla-pacientes">
+                    <tr><td style="text-align:center;">Cargando pacientes...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="seccion-tabla" id="seccion-bitacoras">
+            <h2>3. Bitácoras de Atención / Urgencias</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha Registro</th>
+                        <th>Médico</th>
+                        <th>ID Paciente</th>
+                        <th>Motivo de Consulta</th>
+                        <th>Temperatura</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-bitacoras">
+                    <tr><td colspan="6" style="text-align:center;">Cargando bitácoras...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+        const supabaseUrl = 'https://aeuadsmdunxymrztfaqk.supabase.co';
+        const supabaseKey = 'sb_publishable_iqVddk5ycG5HW6KnMU4w2A_xzQqSE3G';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        function renderizarTablaDinamica(datos, idHead, idBody) {
+            const thead = document.getElementById(idHead);
+            const tbody = document.getElementById(idBody);
+            
+            if (!datos || datos.length === 0) {
+                tbody.innerHTML = `<tr><td style="text-align:center;">No hay registros disponibles.</td></tr>`;
+                return;
+            }
+
+            const columnas = Object.keys(datos[0]);
+            thead.innerHTML = `<tr>${columnas.map(col => `<th>${col.replace('_', ' ')}</th>`).join('')}</tr>`;
+            tbody.innerHTML = datos.map(fila => 
+                `<tr>${columnas.map(col => `<td>${fila[col] !== null ? fila[col] : 'N/A'}</td>`).join('')}</tr>`
+            ).join('');
+        }
+
+        async function cargarDatosSistema() {
+            const { data: clientes, error: errCli } = await supabase.from('clientes').select('*');
+            const tbodyCli = document.getElementById('tabla-clientes');
+            if (!errCli && clientes && clientes.length > 0) {
+                tbodyCli.innerHTML = clientes.map(c => `
+                    <tr>
+                        <td>${c.id}</td>
+                        <td>${c.nombre_completo || 'N/A'}</td>
+                        <td>${c.telefono || 'N/A'}</td>
+                        <td>${c.direccion || 'N/A'}</td>
+                    </tr>`).join('');
+            } else {
+                tbodyCli.innerHTML = `<tr><td colspan="4" style="text-align:center;">No hay clientes registrados.</td></tr>`;
+            }
+
+            const { data: pacientes } = await supabase.from('pacientes').select('*');
+            renderizarTablaDinamica(pacientes, 'head-pacientes', 'tabla-pacientes');
+
+            const { data: bitacoras, error: errBit } = await supabase
+                .from('bitacoras_atencion')
+                .select(`
+                    *,
+                    personal_medico ( nombre )
+                `);
+            
+            const tbodyBit = document.getElementById('tabla-bitacoras');
+            if (!errBit && bitacoras && bitacoras.length > 0) {
+                tbodyBit.innerHTML = bitacoras.map(b => {
+                    const nombreMedico = b.personal_medico?.nombre || 'Médico no asignado';
+                    return `
+                        <tr>
+                            <td>${b.id}</td>
+                            <td>${b.fecha_registro ? new Date(b.fecha_registro).toLocaleString() : 'N/A'}</td>
+                            <td><strong>${nombreMedico}</strong></td>
+                            <td>${b.paciente_id || 'N/A'}</td>
+                            <td>${b.motivo_consulta || 'N/A'}</td>
+                            <td>${b.temperatura || 'N/A'}</td>
+                        </tr>`;
+                }).join('');
+            } else {
+                tbodyBit.innerHTML = `<tr><td colspan="6" style="text-align:center;">No hay bitácoras registradas.</td></tr>`;
+            }
+        }
+
+        window.filtrarTablasInteligente = function() {
+            const texto = document.getElementById('buscador-general').value.toLowerCase().trim();
+            const secciones = document.querySelectorAll('.seccion-tabla');
+
+            secciones.forEach(seccion => {
+                const filas = seccion.querySelectorAll('tbody tr');
+                let hayCoincidenciaEnSeccion = false;
+
+                filas.forEach(fila => {
+                    const contenido = fila.textContent.toLowerCase();
+                    if (texto === "" || (contenido.includes(texto) && !contenido.includes("no hay registros") && !contenido.includes("cargando"))) {
+                        fila.style.display = '';
+                        hayCoincidenciaEnSeccion = true;
+                    } else {
+                        fila.style.display = 'none';
+                    }
+                });
+
+                if (texto !== "" && !hayCoincidenciaEnSeccion) {
+                    seccion.style.display = 'none';
+                } else {
+                    seccion.style.display = 'block';
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', cargarDatosSistema);
+    </script>
+</body>
+</html>
