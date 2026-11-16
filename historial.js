@@ -1,5 +1,7 @@
 import { supabase } from './supabase-config.js';
 
+let listaBitacoras = [];
+
 document.addEventListener('DOMContentLoaded', () => {
     cargarHistorialUrgencias();
     configurarFiltrosMultiples();
@@ -19,44 +21,63 @@ async function cargarHistorialUrgencias() {
                     id, 
                     nombre, 
                     especie, 
+                    raza,
                     clientes ( nombre_completo, telefono )
                 )
-            `);
+            `)
+            .order('id', { ascending: false });
 
         if (error) throw error;
 
-        tbody.innerHTML = '';
+        listaBitacoras = data || [];
+        mostrarEnTabla(listaBitacoras);
 
-        if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #718096;">No hay registros de atención médica.</td></tr>';
-            return;
-        }
+    } catch (error) {
+        console.error('Error al cargar historial:', error.message);
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color: red;">Error al cargar datos: ${error.message}</td></tr>`;
+    }
+}
 
-        data.forEach(item => {
-            const fila = document.createElement('tr');
-            const medicoNombre = item.personal_medico?.nombre || 'Médico no asignado';
-            const medicoId = item.medico_id || 'S/N';
-            const mascotaNombre = item.pacientes?.nombre || 'Desconocido';
-            const mascotaEspecie = item.pacientes?.especie || 'N/A';
-            const mascotaId = item.pacientes?.id || item.paciente_id || 'S/N';
-            const propietarioNombre = item.pacientes?.clientes?.nombre_completo || 'Sin propietario';
-            const propietarioTelefono = item.pacientes?.clientes?.telefono || 'Sin teléfono';
-            const motivoConsulta = item.motivo_consultas || item.motivo_consulta || item.motivo || '';
-            const fechaHora = item.fecha_registro ? new Date(item.fecha_registro).toLocaleString() : 'N/A';
+function mostrarEnTabla(datos) {
+    const tbody = document.getElementById('cuerpoHistorial');
+    if (!tbody) return;
 
-            fila.setAttribute('data-id-mascota', String(mascotaId).toLowerCase());
-            fila.setAttribute('data-medico', String(medicoNombre).toLowerCase());
-            fila.setAttribute('data-propietario', String(propietarioNombre).toLowerCase());
-            fila.setAttribute('data-mascota', String(mascotaNombre).toLowerCase());
-            fila.setAttribute('data-motivo', String(motivoConsulta).toLowerCase());
-            fila.setAttribute('data-telefono', String(propietarioTelefono).toLowerCase());
+    if (!datos || datos.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #718096;">No hay registros de atención médica.</td></tr>';
+        return;
+    }
 
-            fila.innerHTML = `
+    tbody.innerHTML = datos.map(item => {
+        const medicoNombre = item.personal_medico?.nombre || 'Médico no asignado';
+        const medicoId = item.medico_id || 'S/N';
+        const mascotaNombre = item.pacientes?.nombre || 'Desconocido';
+        const mascotaEspecie = item.pacientes?.especie || 'N/A';
+        const mascotaId = item.pacientes?.id || item.paciente_id || 'S/N';
+        const propietarioNombre = item.pacientes?.clientes?.nombre_completo || 'Sin propietario';
+        const propietarioTelefono = item.pacientes?.clientes?.telefono || 'Sin teléfono';
+        const motivoConsulta = item.motivo_consultas || item.motivo_consulta || item.motivo || 'N/A';
+        const fechaHora = item.fecha_registro ? new Date(item.fecha_registro).toLocaleString() : 'N/A';
+
+        // Variables auxiliares para los atributos de búsqueda rápida
+        const strIdMascota = String(mascotaId).toLowerCase();
+        const strMedico = String(medicoNombre).toLowerCase();
+        const strPropietario = String(propietarioNombre).toLowerCase();
+        const strMascota = String(mascotaNombre).toLowerCase();
+        const strMotivo = String(motivoConsulta).toLowerCase();
+        const strTelefono = String(propietarioTelefono).toLowerCase();
+
+        return `
+            <tr data-id-mascota="${strIdMascota}" 
+                data-medico="${strMedico}" 
+                data-propietario="${strPropietario}" 
+                data-mascota="${strMascota}" 
+                data-motivo="${strMotivo}" 
+                data-telefono="${strTelefono}">
                 <td>${fechaHora}</td>
                 <td>
                     <strong>${medicoNombre}</strong><br>
                     <span style="font-family: monospace; font-size: 11px; color: #4a5568;" title="${medicoId}">
-                        ${medicoId.substring(0, 15)}...
+                        ${String(medicoId).substring(0, 15)}...
                     </span>
                 </td>
                 <td><strong>${propietarioNombre}</strong><br><small style="color: #718096;">(${propietarioTelefono})</small></td>
@@ -71,21 +92,17 @@ async function cargarHistorialUrgencias() {
                 <td>
                     <div style="font-size: 13px;">
                         Temp: ${item.temperatura || item.temp || '--'}°C<br>
-                        FC: ${item.fc || '--'} lpm<br>
-                        FR: ${item.fr || '--'} rpm
+                        FC: ${item.frecuencia_cardiaca || item.fc || '--'} lpm<br>
+                        FR: ${item.frecuencia_respiratoria || item.fr || '--'} rpm
                     </div>
                 </td>
                 <td>
                     <strong>Fármacos:</strong> ${item.farmacos || 'N/A'}<br>
                     <strong>Notas:</strong> ${item.notas || 'N/A'}
                 </td>
-            `;
-            tbody.appendChild(fila);
-        });
-    } catch (error) {
-        console.error('Error al cargar historial:', error.message);
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color: red;">Error al cargar datos: ${error.message}</td></tr>`;
-    }
+            </tr>
+        `;
+    }).join('');
 }
 
 function configurarFiltrosMultiples() {
@@ -97,7 +114,7 @@ function configurarFiltrosMultiples() {
         const filas = document.querySelectorAll('#cuerpoHistorial tr');
 
         filas.forEach(fila => {
-            if (fila.cells.length === 1) return;
+            if (fila.cells.length === 1) return; // Salta filas de "No hay registros" o errores
 
             const idMascota = fila.getAttribute('data-id-mascota') || '';
             const medico = fila.getAttribute('data-medico') || '';
