@@ -22,22 +22,16 @@ async function cargarHistorial() {
         }
 
         data.forEach(doc => {
-            let idOriginal = doc.id ? String(doc.id) : '';
-            let idEnmascarado;
-            if (idOriginal.length < 40) {
-                let hashBase = btoa(idOriginal).toLowerCase().replace(/=/g, '');
-                idEnmascarado = '7f61a431ac0389417590a7f91de6707f3ebd8d08' + hashBase;
-            } else {
-                idEnmascarado = idOriginal;
-            }
+
+            const idDoc = doc.id ? String(doc.id).trim() : '';
 
             const fila = document.createElement('tr');
             fila.innerHTML = `
-                <td style="font-family: monospace; font-size: 13px; color: #4a5568;">${idEnmascarado}</td>
+                <td style="font-family: monospace; font-size: 13px; color: #4a5568;">${idDoc}</td>
                 <td><strong>${doc.nombre || ''}</strong></td>
                 <td>${doc.especialidad || ''}</td>
                 <td>
-                    <button class="btn-eliminar" onclick="eliminarDoctor('${doc.id}')">Eliminar</button>
+                    <button class="btn-eliminar" onclick="eliminarDoctor('${idDoc}')">Eliminar</button>
                 </td>
             `;
             tbody.appendChild(fila);
@@ -52,7 +46,7 @@ window.eliminarDoctor = async function(id) {
         const { error } = await supabase
             .from('personal_medico')
             .delete()
-            .eq('id', id);
+            .eq('id', String(id).trim());
 
         if (!error) {
             alert('Eliminado correctamente');
