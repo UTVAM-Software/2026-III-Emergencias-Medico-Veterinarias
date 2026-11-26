@@ -58,7 +58,6 @@ function mostrarEnTabla(datos) {
         const motivoConsulta = item.motivo_consultas || item.motivo_consulta || item.motivo || 'N/A';
         const fechaHora = item.fecha_registro ? new Date(item.fecha_registro).toLocaleString() : 'N/A';
 
-        // Variables auxiliares para los atributos de búsqueda rápida
         const strIdMascota = String(mascotaId).toLowerCase();
         const strMedico = String(medicoNombre).toLowerCase();
         const strPropietario = String(propietarioNombre).toLowerCase();
@@ -114,7 +113,7 @@ function configurarFiltrosMultiples() {
         const filas = document.querySelectorAll('#cuerpoHistorial tr');
 
         filas.forEach(fila => {
-            if (fila.cells.length === 1) return; // Salta filas de "No hay registros" o errores
+            if (fila.cells.length === 1) return;
 
             const idMascota = fila.getAttribute('data-id-mascota') || '';
             const medico = fila.getAttribute('data-medico') || '';

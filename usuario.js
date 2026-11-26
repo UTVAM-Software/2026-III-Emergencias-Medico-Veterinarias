@@ -1,109 +1,15 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { supabase } from './supabase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    cargarDoctores();
+    cargarUsuarios();
     
     const formUsuario = document.getElementById('form-usuario');
     if (formUsuario) {
-        formUsuario.addEventListener('submit', registrarDoctor);
+        formUsuario.addEventListener('submit', registrarUsuario);
     }
 });
 
-async function cargarDoctores() {
-    try {
-        const { data, error } = await supabase.from('personal_medico').select('*');
-        if (error) throw error;
-
-        const tbody = document.querySelector('#tabla-usuarios tbody');
-        tbody.innerHTML = '';
-
-        if (data && data.length > 0) {
-            data.forEach(doc => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${doc.id}</td>
-                        <td>${doc.nombre}</td>
-                        <td>${doc.especialidad}</td>
-                        <td>
-                            <button class="btn-eliminar" onclick="eliminarDoctor('${doc.id}')">Eliminar</button>
-                        </td>
-                    </tr>
-                `;
-            });
-        } else {
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align: center;">No hay doctores registrados.</td></tr>`;
-        }
-    } catch (error) {
-        console.error('Error al cargar doctores:', error.message);
-    }
-}
-
-async function registrarDoctor(e) {
-    e.preventDefault();
-    
-    const id = document.getElementById('id').value.trim();
-    const nombre = document.getElementById('nombre').value.trim();
-    const especialidad = document.getElementById('especialidad').value.trim();
-
-    try {
-        const { error } = await supabase
-            .from('personal_medico')
-            .insert([{ id, nombre, especialidad }]);
-
-        if (error) throw error;
-
-        alert('¡Doctor registrado con éxito!');
-        document.getElementById('form-usuario').reset();
-        cargarDoctores();
-    } catch (error) {
-        console.error('Error al registrar:', error.message);
-        alert('Error al registrar doctor (es posible que el Código/ID ya exista).');
-    }
-}
-
-window.eliminarDoctor = async function(id) {
-    if (confirm(`¿Estás seguro de eliminar al doctor con código ${id}?`)) {
-        try {
-            const { error } = await supabase
-                .from('personal_medico')
-                .delete()
-                .eq('id', id);
-
-            if (error) throw error;
-
-            alert('Doctor eliminado correctamente');
-            cargarDoctores();
-        } catch (error) {
-            console.error('Error al eliminar:', error.message);
-            alert('No se pudo eliminar el registro.');
-        }
-    }
-=======
-=======
->>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
-import { supabase } from './supabase-config.js';
-
-document.addEventListener('DOMContentLoaded', () => {
-    cargarDoctores();
-    
-    const formUsuario = document.getElementById('form-usuario');
-    if (formUsuario) {
-        formUsuario.addEventListener('submit', registrarDoctor);
-    }
-});
-
-function generarIdSeguro(idOriginal) {
-    let idStr = String(idOriginal);
-    if (idStr.length < 40) {
-        let hashBase = btoa(idStr).toLowerCase().replace(/=/g, '');
-        return '7f61a431ac0389417590a7f91de6707f3ebd8d08' + hashBase;
-    }
-    return idStr;
-}
-
-async function cargarDoctores() {
+async function cargarUsuarios() {
     try {
         const { data, error } = await supabase.from('personal_medico').select('*');
         if (error) throw error;
@@ -113,34 +19,32 @@ async function cargarDoctores() {
         tbody.innerHTML = '';
 
         if (data && data.length > 0) {
-            data.forEach(doc => {
+            data.forEach(user => {
                 tbody.innerHTML += `
                     <tr>
-                        <td>${doc.id}</td>
-                        <td>${doc.nombre}</td>
-                        <td>${doc.especialidad}</td>
+                        <td>${user.id}</td>
+                        <td>${user.nombre}</td>
+                        <td>${user.especialidad || 'N/A'}</td>
                         <td>
-                            <button class="btn-eliminar" onclick="eliminarDoctor('${doc.id}')">Eliminar</button>
+                            <button class="btn-eliminar" onclick="eliminarUsuario('${user.id}')">Eliminar</button>
                         </td>
                     </tr>
                 `;
             });
         } else {
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align: center;">No hay doctores registrados.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #718096;">No hay registros de usuarios.</td></tr>`;
         }
     } catch (error) {
-        console.error('Error al cargar doctores:', error.message);
+        console.error('Error al cargar usuarios:', error.message);
     }
 }
 
-async function registrarDoctor(e) {
+async function registrarUsuario(e) {
     e.preventDefault();
     
-    const idInput = document.getElementById('id').value.trim();
+    const id = document.getElementById('id').value.trim();
     const nombre = document.getElementById('nombre').value.trim();
-    const especialidad = document.getElementById('especialidad').value.trim();
-
-    const id = generarIdSeguro(idInput);
+    const especialidad = document.getElementById('especialidad')?.value.trim() || '';
 
     try {
         const { error } = await supabase
@@ -149,17 +53,17 @@ async function registrarDoctor(e) {
 
         if (error) throw error;
 
-        alert('¡Doctor registrado con éxito!');
+        alert('¡Usuario registrado con éxito!');
         document.getElementById('form-usuario').reset();
-        cargarDoctores();
+        cargarUsuarios();
     } catch (error) {
         console.error('Error al registrar:', error.message);
-        alert('Error al registrar doctor (es posible que el Código/ID ya exista).');
+        alert('Error al registrar usuario: ' + error.message);
     }
 }
 
-window.eliminarDoctor = async function(id) {
-    if (confirm(`¿Estás seguro de eliminar al doctor con código ${id}?`)) {
+window.eliminarUsuario = async function(id) {
+    if (confirm(`¿Estás seguro de eliminar el registro con ID ${id}?`)) {
         try {
             const { error } = await supabase
                 .from('personal_medico')
@@ -168,15 +72,11 @@ window.eliminarDoctor = async function(id) {
 
             if (error) throw error;
 
-            alert('Doctor eliminado correctamente');
-            cargarDoctores();
+            alert('Usuario eliminado correctamente');
+            cargarUsuarios();
         } catch (error) {
             console.error('Error al eliminar:', error.message);
             alert('No se pudo eliminar el registro.');
         }
     }
-<<<<<<< HEAD
->>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
-=======
->>>>>>> 8182de1faf38fb6f92bc1dd230cbe43774bff1d7
 };
